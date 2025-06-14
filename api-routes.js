@@ -1,29 +1,43 @@
 const router = require("express").Router();
 const db = require("./db");
 
-router.route("/inventory").get(async (req, res) => {
-    //const [inventoryTable] = await db.query(`SELECT * FROM inventory`);
-    try {
-        res.send("hi");
-    } catch (err) {
-        res.send(err);
-    }
-});
-// TODO: Create a GET route that returns a list of everything in the inventory table
-// The response should look like:
-// [
-//   {
-//     "id": 1,
-//     "name": "Stratocaster",
-//     "image": "strat.jpg",
-//     "description": "One of the most iconic electric guitars ever made.",
-//     "price": 599.99,
-//     "quantity": 3
-//   },
-//   {...},
-//   {...}, etc
-// ]
-
+router
+    .route("/inventory")
+    .get(async (req, res) => {
+        try {
+            const [inventoryTable] = await db.query(`SELECT * FROM inventory`);
+            res.json(inventoryTable);
+        } catch (err) {
+            res.send(err);
+        }
+    })
+    // TODO: Create a GET route that returns a list of everything in the inventory table
+    // The response should look like:
+    // [
+    //   {
+    //     "id": 1,
+    //     "name": "Stratocaster",
+    //     "image": "strat.jpg",
+    //     "description": "One of the most iconic electric guitars ever made.",
+    //     "price": 599.99,
+    //     "quantity": 3
+    //   },
+    //   {...},
+    //   {...}, etc
+    // ]
+    .post(async (req, res) => {
+        try {
+            const { price, quantity, name, image, description } = req.body;
+            const [newInventory] = await db.query(
+                `
+    INSERT INTO inventory (name, image, description, price, quantity) VALUES (?,?,?,?,?)`,
+                [name, image, description, price, quantity]
+            );
+            res.status(204);
+        } catch (err) {
+            res.send(err);
+        }
+    });
 // TODO: Create a POST route that inserts inventory items
 // This route will accept price, quantity, name, image, and description as JSON
 // in the request body.
