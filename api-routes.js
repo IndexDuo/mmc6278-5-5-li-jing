@@ -2,7 +2,7 @@ const router = require("express").Router();
 const db = require("./db");
 
 router.route("/inventory").get(async (req, res) => {
-    const [inventoryTable] = await db.query(`SELECT * FROM inventory`);
+    //const [inventoryTable] = await db.query(`SELECT * FROM inventory`);
     res.send("hi");
 });
 // TODO: Create a GET route that returns a list of everything in the inventory table
