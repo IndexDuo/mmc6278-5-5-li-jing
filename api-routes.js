@@ -3,7 +3,7 @@ const db = require("./db");
 
 router.route("/inventory").get(async (req, res) => {
     const [inventoryTable] = await db.query(`SELECT * FROM inventory`);
-    res.json(inventoryTable);
+    return res.json(inventoryTable);
 });
 // TODO: Create a GET route that returns a list of everything in the inventory table
 // The response should look like:
